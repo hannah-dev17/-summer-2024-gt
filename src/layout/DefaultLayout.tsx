@@ -1,9 +1,9 @@
-import React from "react";
-import AppHeader from "../components/Header";
-import AppContent from "../components/Content";
-import AppFooter from "../components/Footer";
-import styled from "styled-components";
-import { supportDeviceSize } from "../components/styles";
+import React from 'react';
+import AppHeader from '../components/Header';
+import AppContent from '../components/Content';
+import AppFooter from '../components/Footer';
+import styled from 'styled-components';
+import { supportDeviceSize } from '../components/styles';
 
 const DefaultLayout = () => {
   /*const navigate = useNavigate()

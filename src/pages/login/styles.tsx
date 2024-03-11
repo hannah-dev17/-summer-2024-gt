@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { supportDeviceSize } from "../../components/styles";
+import styled from 'styled-components';
+import { supportDeviceSize } from '../../components/styles';
 
 export const LoginRoot = styled.div`
   display: flex;
