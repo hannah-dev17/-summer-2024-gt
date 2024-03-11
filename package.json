@@ -17,7 +17,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "axios": "^0.26.1",
+    "axios": "^1.6.7",
     "dotenv-cli": "^5.1.0",
     "jsonwebtoken": "^9.0.0",
     "react": "^17.0.2",
