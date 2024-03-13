@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Header = styled.div`
   background-color: red;
@@ -24,7 +24,7 @@ export const HeaderText = styled.p`
   font-size: 1.2rem;
   font-weight: 600;
   color: white;
-  font-family: "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 `;
 
 export const Button = styled.div`

@@ -1,17 +1,11 @@
-class BusinessModel {
+export class BusinessModel {
   private readonly _id: number;
   private readonly _title: string;
   private readonly _description: string;
   private readonly _coverImageUrl: string;
   private readonly _detailImageUrl: string;
 
-  constructor(
-    id: number,
-    title: string,
-    description: string,
-    coverImageUrl: string,
-    detailImageUrl: string
-  ) {
+  constructor(id: number, title: string, description: string, coverImageUrl: string, detailImageUrl: string) {
     this._id = id;
     this._title = title;
     this._description = description;

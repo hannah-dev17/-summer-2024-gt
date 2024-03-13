@@ -1,4 +1,4 @@
-import request from "./core";
+import request from './core';
 
 export const getRequesterBusinessModelAll = <T>() => {
   // 유효성검사
