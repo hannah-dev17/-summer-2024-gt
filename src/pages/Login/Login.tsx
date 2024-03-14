@@ -7,11 +7,11 @@ import appStoreBadge from '../../assets/images/app-store-badge.png';
 import { DefaultLayout } from '../../layout';
 import { colors } from '../../styles';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
-import { ReactComponent as LockIcon } from '../../assets/icons/lock.svg';
 import { ReactComponent as KakaoIcon } from '../../assets/icons/kakao.svg';
 import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
 import { ID_LENGTH, PASSWORD_LENGTH } from '../../constants';
 import { InputField, Spacing } from '../../components';
+import { PasswordInput } from './components';
 
 type ILoginFormValues = {
   id: string;
@@ -87,15 +87,7 @@ export function Login() {
                   value={id}
                 />
                 <Spacing height={10} />
-                <InputField<ILoginFormValues>
-                  type='password'
-                  label='password'
-                  leftIconComponent={<LockIcon stroke={colors.grey500} />}
-                  placeholder='비밀번호'
-                  validation={formValidation.password}
-                  onChange={handlePasswordChange}
-                  value={password}
-                />
+                <PasswordInput validation={formValidation.password} value={password} onChange={handlePasswordChange} />
                 <Spacing height={20} />
                 <Button type='button' disabled={isButtonDisabled}>
                   로그인
