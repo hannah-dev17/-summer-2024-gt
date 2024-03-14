@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import homeMockUp from '../../assets/images/home-mockup.png';
 import mainLogo from '../../assets/images/mainlogo.png';
@@ -9,27 +9,62 @@ import { colors } from '../../styles';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { ReactComponent as LockIcon } from '../../assets/icons/lock.svg';
 import { ReactComponent as KakaoIcon } from '../../assets/icons/kakao.svg';
+import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
+import { ID_LENGTH, PASSWORD_LENGTH } from '../../constants';
+import { InputField, Spacing } from '../../components';
 
-type InputFieldProps = {
-  leftIconComponent: React.ReactNode;
-  placeholder: string;
-  rightText?: string;
+type ILoginFormValues = {
+  id: string;
+  password: string;
 };
 
-function InputField({ leftIconComponent, placeholder, rightText }: InputFieldProps) {
-  return (
-    <InputWrapper>
-      <Spacing width={20} />
-      {leftIconComponent}
-      <Spacing width={8} />
-      <Input placeholder={placeholder} />
-      {rightText && <p>{rightText}</p>}
-      <Spacing width={12} />
-    </InputWrapper>
-  );
-}
+type IFormValidation = Record<keyof ILoginFormValues, RegisterOptions>;
 
 export function Login() {
+  const formMethods = useForm<ILoginFormValues>({ defaultValues: { id: '', password: '' }, mode: 'onChange' });
+
+  const [id, setId] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.length > ID_LENGTH.MAX) {
+      return;
+    }
+
+    setId(value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.length > PASSWORD_LENGTH.MAX) {
+      return;
+    }
+
+    setPassword(value);
+  };
+
+  const formValidation: IFormValidation = {
+    id: {
+      required: true,
+      minLength: ID_LENGTH.MIN,
+      maxLength: ID_LENGTH.MAX,
+    },
+    password: {
+      required: true,
+      minLength: PASSWORD_LENGTH.MIN,
+      maxLength: PASSWORD_LENGTH.MAX,
+    },
+  };
+
+  const isButtonDisabled =
+    id.length < ID_LENGTH.MIN ||
+    id.length > ID_LENGTH.MAX ||
+    password.length < PASSWORD_LENGTH.MIN ||
+    password.length > PASSWORD_LENGTH.MAX;
+
   return (
     <DefaultLayout>
       <Wrapper>
@@ -40,14 +75,33 @@ export function Login() {
             <Spacing height={70} />
             <LogoImage src={mainLogo} alt='logo' />
             <Spacing height={57} />
-            <InputField
-              leftIconComponent={<MailIcon stroke={colors.grey500} />}
-              placeholder='전화번호, 사용자 이름 또는 이메일'
-            />
-            <Spacing height={10} />
-            <InputField leftIconComponent={<LockIcon stroke={colors.grey500} />} placeholder='비밀번호' />
-            <Spacing height={20} />
-            <Button type='button'>로그인</Button>
+            <FormProvider {...formMethods}>
+              <Form>
+                <InputField<ILoginFormValues>
+                  type='text'
+                  label='id'
+                  leftIconComponent={<MailIcon stroke={colors.grey500} />}
+                  placeholder='전화번호, 사용자 이름 또는 이메일'
+                  validation={formValidation.id}
+                  onChange={handleIdChange}
+                  value={id}
+                />
+                <Spacing height={10} />
+                <InputField<ILoginFormValues>
+                  type='password'
+                  label='password'
+                  leftIconComponent={<LockIcon stroke={colors.grey500} />}
+                  placeholder='비밀번호'
+                  validation={formValidation.password}
+                  onChange={handlePasswordChange}
+                  value={password}
+                />
+                <Spacing height={20} />
+                <Button type='button' disabled={isButtonDisabled}>
+                  로그인
+                </Button>
+              </Form>
+            </FormProvider>
             <Spacing height={10} />
             <Text fontWeight={400} fontSize={16} lineHeight={24} color={colors.grey500}>
               or
@@ -90,6 +144,8 @@ export function Login() {
   );
 }
 
+const Form = styled.form``;
+
 const BadgeWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -126,11 +182,11 @@ const Text = styled.p<{ fontWeight: number; fontSize: number; lineHeight: number
   margin: 0;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ disabled: boolean }>`
   width: 320px;
   height: 44px;
   border-radius: 30px;
-  background-color: ${colors.blue200};
+  background-color: ${props => (props.disabled ? colors.blue200 : colors.blue500)};
   outline: 0;
   border: none;
   font-weight: 600;
@@ -138,7 +194,7 @@ const Button = styled.button`
   text-align: center;
   line-height: 24px;
   color: ${colors.white};
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
 `;
 
 const KakaoLoginButton = styled.button`
@@ -175,26 +231,6 @@ const MockUpImage = styled.img`
 const LogoImage = styled.img`
   width: 217px;
   height: 80;
-`;
-
-const Spacing = styled.div<{ width?: number; height?: number }>`
-  width: ${props => `${props.width}px`};
-  height: ${props => `${props.height}px`};
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  border: 1px solid ${colors.grey200};
-  border-radius: 30px;
-  width: 320px;
-  height: 44px;
-  align-items: center;
-`;
-
-const Input = styled.input`
-  border: none;
-  outline: 0;
-  width: 100%;
 `;
 
 const LoginBox = styled.div`
