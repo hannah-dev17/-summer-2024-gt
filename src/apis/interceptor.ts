@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { JWT_KEY } from '../config/constant';
 import { jwtDecode } from 'jwt-decode';
+import { AuthRepository } from '../repositories';
 
 const request: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -12,7 +13,7 @@ const request: AxiosInstance = axios.create({
 });
 
 request.interceptors.request.use(
-  config => {
+  async config => {
     const jwt = window.localStorage.getItem(JWT_KEY) ?? '';
 
     if (jwt) {
@@ -20,9 +21,10 @@ request.interceptors.request.use(
       const currentTime = new Date().getTime() / 1000;
 
       if (decodedJwt.exp ?? 0 < currentTime) {
-        // 서버에 토큰 재발급 요청 코드 작성 필요
-        // eslint-disable-next-line no-console
-        console.log('서버에 토큰 재발급 요청');
+        const response = await AuthRepository.verifyJwtToken({ jwt });
+        const updatedJwt = response.data.result.jwt;
+
+        window.localStorage.setItem(JWT_KEY, updatedJwt);
       } else {
         config.headers.Authorization = `Bearer ${jwt}`;
       }
