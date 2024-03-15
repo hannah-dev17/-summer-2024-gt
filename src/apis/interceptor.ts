@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { JWT_KEY } from '../../config/constant';
-import * as jsonwebtoken from 'jsonwebtoken';
-import { JwtPayload } from 'jsonwebtoken';
+import { JWT_KEY } from '../config/constant';
+import { jwtDecode } from 'jwt-decode';
 
 const request: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -9,21 +8,26 @@ const request: AxiosInstance = axios.create({
 
   headers: {
     accept: 'application/json',
-    Authorization: `Bearer ${window.localStorage.getItem(JWT_KEY)}`,
   },
 });
 
 request.interceptors.request.use(
   config => {
     const jwt = window.localStorage.getItem(JWT_KEY) ?? '';
-    const decodedJwt: JwtPayload = jsonwebtoken.decode(jwt) as JwtPayload;
-    const currentTime = new Date().getTime() / 1000;
 
-    if (decodedJwt.exp ?? 0 < currentTime) {
-      // 서버에 토큰 재발급 요청 코드 작성 필요
-      // eslint-disable-next-line no-console
-      console.log('서버에 토큰 재발급 요청');
+    if (jwt) {
+      const decodedJwt = jwtDecode(jwt);
+      const currentTime = new Date().getTime() / 1000;
+
+      if (decodedJwt.exp ?? 0 < currentTime) {
+        // 서버에 토큰 재발급 요청 코드 작성 필요
+        // eslint-disable-next-line no-console
+        console.log('서버에 토큰 재발급 요청');
+      } else {
+        config.headers.Authorization = `Bearer ${jwt}`;
+      }
     }
+
     return config;
   },
   error => {
@@ -42,4 +46,4 @@ request.interceptors.response.use(
   },
 );
 
-export default request;
+export { request };

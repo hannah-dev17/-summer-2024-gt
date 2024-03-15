@@ -12,6 +12,10 @@ import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
 import { ID_LENGTH, PASSWORD_LENGTH } from '../../constants';
 import { InputField, Spacing } from '../../components';
 import { PasswordInput } from './components';
+import { AuthRepository } from '../../repositories';
+import { useSetRecoilState } from 'recoil';
+import { authState } from '../../recoil';
+import { JWT_KEY } from '../../config/constant';
 
 type ILoginFormValues = {
   id: string;
@@ -25,6 +29,24 @@ export function Login() {
 
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const setAuthState = useSetRecoilState(authState);
+
+  const signIn = async (loginId: string, password: string) => {
+    try {
+      const response = await AuthRepository.signIn({ loginId, password });
+
+      setAuthState(response.result);
+      localStorage.setItem(JWT_KEY, response.result.jwt);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('error', error);
+    }
+  };
+
+  const onSubmit = (data: ILoginFormValues) => {
+    signIn(data.id, data.password);
+  };
 
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -89,7 +111,7 @@ export function Login() {
                 <Spacing height={10} />
                 <PasswordInput validation={formValidation.password} value={password} onChange={handlePasswordChange} />
                 <Spacing height={20} />
-                <Button type='button' disabled={isButtonDisabled}>
+                <Button type='button' disabled={isButtonDisabled} onClick={formMethods.handleSubmit(onSubmit)}>
                   로그인
                 </Button>
               </Form>
