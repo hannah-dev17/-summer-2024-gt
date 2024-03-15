@@ -7,3 +7,4 @@ yarn.lock
 build-dev/*
 build-stage/*
 build/*
+.env
