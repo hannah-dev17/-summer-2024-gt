@@ -20,6 +20,7 @@
     "axios": "^1.6.7",
     "dotenv-cli": "^5.1.0",
     "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^4.0.0",
     "react": "^17.0.2",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^17.0.2",
@@ -58,5 +59,9 @@
       "prettier --write .",
       "eslint --fix --max-warnings 0 src/"
     ]
+  },
+  "browser": {
+    "crypto": false,
+    "buffer": false
   }
 }
