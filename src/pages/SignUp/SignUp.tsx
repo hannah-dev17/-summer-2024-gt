@@ -1,18 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DefaultLayout } from '../../layout';
 import styled from 'styled-components';
 import homeMockUp from '../../assets/images/home-mockup.png';
 import mainLogo from '../../assets/images/mainlogo.png';
 import { AppDownloadBadges, Button, InputField, KakaoLoginButton, Spacing, Text } from '../../components';
 import { colors } from '../../styles';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { ReactComponent as SettingsIcon } from '../../assets/icons/settings.svg';
 import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
+import { ReactComponent as XCircleIcon } from '../../assets/icons/x-circle.svg';
+import { ReactComponent as CheckCircleIcon } from '../../assets/icons/check-circle.svg';
 import { PasswordInput } from './components';
+import { PHONE_LENGTH } from '../../constants';
+
+type ISignUpFormValues = {
+  phone: string;
+};
+
+type IFormValidation = Record<keyof ISignUpFormValues, RegisterOptions>;
 
 export function SignUp() {
-  const formMethods = useForm();
+  const formMethods = useForm<ISignUpFormValues>({ mode: 'onChange' });
+  const {
+    formState: { errors },
+  } = formMethods;
+
+  const hasPhoneMaxLengthError = errors.phone?.type === 'maxLength';
+  const hasPhonePatternError = errors.phone?.type === 'pattern';
+
+  const [phone, setPhone] = useState<string>('');
+
+  const formValidation: IFormValidation = {
+    phone: {
+      required: true,
+      maxLength: 20,
+      pattern: /^\d{3}-\d{3,4}-\d{4}$/,
+    },
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.length > PHONE_LENGTH.MAX) {
+      return;
+    }
+
+    setPhone(value);
+  };
+
+  const showPhoneValidationIcon = () => {
+    if (phone && !hasPhoneMaxLengthError) {
+      if (hasPhonePatternError) {
+        return <XCircleIcon stroke={colors.red500} />;
+      }
+
+      return <CheckCircleIcon stroke={colors.grey500} />;
+    }
+
+    if (hasPhoneMaxLengthError) {
+      return <XCircleIcon stroke={colors.red500} />;
+    }
+
+    return <></>;
+  };
 
   return (
     <DefaultLayout>
@@ -37,16 +88,14 @@ export function SignUp() {
             <FormProvider {...formMethods}>
               <Form>
                 <InputField
-                  type='text'
+                  type='tel'
                   label='phone'
                   leftIconComponent={<MailIcon stroke={colors.grey500} />}
                   placeholder='전화번호, 사용자 이름 또는 이메일'
-                  validation={{}}
-                  onChange={() => {
-                    // eslint-disable-next-line no-console
-                    console.log('change');
-                  }}
-                  value={''}
+                  validation={formValidation.phone}
+                  onChange={handlePhoneChange}
+                  value={phone}
+                  rightComponent={showPhoneValidationIcon()}
                 />
                 <Spacing height={10} />
                 <InputField
