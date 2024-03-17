@@ -29,7 +29,7 @@ export function InputField<IFormValues>({
 
   return (
     <InputWrapper>
-      <SideWrapper>
+      <LeftSideWrapper>
         <Spacing width={20} />
         {leftIconComponent}
         <Spacing width={8} />
@@ -39,18 +39,19 @@ export function InputField<IFormValues>({
           {...formMethods.register(label, { ...validation, onChange })}
           value={value}
         />
-      </SideWrapper>
-      <SideWrapper>
-        {rightComponent && rightComponent}
-        <Spacing width={20} />
-      </SideWrapper>
+      </LeftSideWrapper>
+      {rightComponent && (
+        <SideWrapper>
+          {rightComponent}
+          <Spacing width={20} />
+        </SideWrapper>
+      )}
     </InputWrapper>
   );
 }
 
 const InputWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   border: 1px solid ${colors.grey200};
   border-radius: 30px;
   width: 320px;
@@ -58,11 +59,20 @@ const InputWrapper = styled.div`
   align-items: center;
 `;
 
+const LeftSideWrapper = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
 const SideWrapper = styled.div`
   display: flex;
+  margin-left: auto;
 `;
 
 const Input = styled.input`
+  box-sizing: border-box;
   border: none;
   outline: 0;
+  width: 100%;
+  margin-right: 20px;
 `;
