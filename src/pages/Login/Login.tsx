@@ -16,6 +16,8 @@ import { AuthRepository } from '../../repositories';
 import { useSetRecoilState } from 'recoil';
 import { authState } from '../../recoil';
 import { JWT_KEY } from '../../config/constant';
+import { ErrorResponse } from '../../types';
+import axios from 'axios';
 
 type ILoginFormValues = {
   id: string;
@@ -29,6 +31,7 @@ export function Login() {
 
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const setAuthState = useSetRecoilState(authState);
 
@@ -38,7 +41,18 @@ export function Login() {
 
       setAuthState(response.result);
       localStorage.setItem(JWT_KEY, response.result.jwt);
+
+      if (errorMessage) {
+        setErrorMessage('');
+      }
     } catch (error) {
+      if (axios.isAxiosError<ErrorResponse>(error) && error.response) {
+        const { statusCode, message } = error.response.data;
+
+        if (statusCode === 404) {
+          setErrorMessage(message[0]);
+        }
+      }
       // eslint-disable-next-line no-console
       console.log('error', error);
     }
@@ -131,6 +145,10 @@ export function Login() {
               카카오 로그인
             </KakaoLoginButton>
             <Spacing height={30} />
+            <Text fontWeight={600} fontSize={14} lineHeight={20} color={colors.red500}>
+              {errorMessage}
+            </Text>
+            <Spacing height={10} />
             <Text fontWeight={400} fontSize={14} lineHeight={20} color={colors.grey500}>
               비밀번호를 잊으셨나요?
             </Text>
