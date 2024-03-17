@@ -16,3 +16,12 @@ export type VeryfiJwtTokenResponse = {
 export type VerifyJwtTokenBody = {
   jwt: string;
 };
+
+export type SignInByKakaoQueryParams = {
+  code: string;
+};
+
+export type SignInByKakaoResponse = {
+  id: number;
+  jwt: string;
+};

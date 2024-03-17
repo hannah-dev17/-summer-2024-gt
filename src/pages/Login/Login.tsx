@@ -9,7 +9,7 @@ import { colors } from '../../styles';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { ReactComponent as KakaoIcon } from '../../assets/icons/kakao.svg';
 import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
-import { ID_LENGTH, PASSWORD_LENGTH } from '../../constants';
+import { ID_LENGTH, KAKAO_AUTH_URL, PASSWORD_LENGTH } from '../../constants';
 import { InputField, Spacing } from '../../components';
 import { PasswordInput } from './components';
 import { AuthRepository } from '../../repositories';
@@ -87,6 +87,10 @@ export function Login() {
     password.length < PASSWORD_LENGTH.MIN ||
     password.length > PASSWORD_LENGTH.MAX;
 
+  const handleKakaoLoginClick = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   return (
     <DefaultLayout>
       <Wrapper>
@@ -121,7 +125,7 @@ export function Login() {
               or
             </Text>
             <Spacing height={10} />
-            <KakaoLoginButton>
+            <KakaoLoginButton onClick={handleKakaoLoginClick}>
               <KakaoIcon />
               <Spacing width={1} />
               카카오 로그인

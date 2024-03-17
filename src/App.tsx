@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Login } from './pages';
+import { Login, LoginKakao } from './pages';
+import { loginPath, loginKakaoPath } from './constants';
 
 const loading = <div>화면을 불러오는 중 입니다.</div>;
 
@@ -14,7 +15,8 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={loading}>
         <Routes>
-          <Route path='/login' element={<Login />} />
+          <Route path={loginPath} element={<Login />} />
+          <Route path={loginKakaoPath} element={<LoginKakao />} />
           <Route path='/404' element={<Page404 />} />
           <Route path='/500' element={<Page500 />} />
         </Routes>
