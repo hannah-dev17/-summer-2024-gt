@@ -253,5 +253,5 @@ const SignUpBox = styled.div`
 
 const LogoImage = styled.img`
   width: 217px;
-  height: 80;
+  height: 80px;
 `;
