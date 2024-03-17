@@ -12,18 +12,27 @@ import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
 import { ReactComponent as XCircleIcon } from '../../assets/icons/x-circle.svg';
 import { ReactComponent as CheckCircleIcon } from '../../assets/icons/check-circle.svg';
 import { PasswordInput } from './components';
-import { ID_LENGTH, PHONE_LENGTH, REAL_NAME_LENGTH } from '../../constants';
+import { ID_LENGTH, PASSWORD_LENGTH, PHONE_LENGTH, REAL_NAME_LENGTH } from '../../constants';
 
 type ISignUpFormValues = {
   phone: string;
   realName: string;
   loginId: string;
+  password: string;
 };
 
 type IFormValidation = Record<keyof ISignUpFormValues, RegisterOptions>;
 
 export function SignUp() {
-  const formMethods = useForm<ISignUpFormValues>({ mode: 'onChange' });
+  const formMethods = useForm<ISignUpFormValues>({
+    mode: 'onChange',
+    defaultValues: {
+      phone: '',
+      realName: '',
+      loginId: '',
+      password: '',
+    },
+  });
   const {
     formState: { errors },
   } = formMethods;
@@ -33,10 +42,14 @@ export function SignUp() {
   const hasRealNameMaxLengthError = errors.realName?.type === 'maxLength';
   const hasLoginIdMaxLengthError = errors.loginId?.type === 'maxLength';
   const hasLoginIdPatternError = errors.loginId?.type === 'pattern';
+  const hasPasswordMaxLengthError = errors.password?.type === 'maxLength';
+  const hasPasswordPatternError = errors.password?.type === 'pattern';
+  const hasPasswordMinLengthError = errors.password?.type === 'minLength';
 
   const [phone, setPhone] = useState<string>('');
   const [realName, setRealName] = useState<string>('');
   const [loginId, setLoginId] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const formValidation: IFormValidation = {
     phone: {
@@ -52,6 +65,12 @@ export function SignUp() {
       required: true,
       maxLength: 20,
       pattern: /^[a-z0-9_.]+$/,
+    },
+    password: {
+      required: true,
+      minLength: 7,
+      maxLength: 20,
+      pattern: /^[a-z0-9]+$/,
     },
   };
 
@@ -85,6 +104,16 @@ export function SignUp() {
     setLoginId(value);
   };
 
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.length > PASSWORD_LENGTH.MAX) {
+      return;
+    }
+
+    setPassword(value);
+  };
+
   const showPhoneValidationIcon = () => {
     if (phone && !hasPhoneMaxLengthError) {
       if (hasPhonePatternError) {
@@ -112,6 +141,22 @@ export function SignUp() {
   const showLoginIdValidationIcon = () => {
     if (loginId && !hasLoginIdMaxLengthError) {
       if (hasLoginIdPatternError) {
+        return <XCircleIcon stroke={colors.red500} />;
+      }
+
+      return <CheckCircleIcon stroke={colors.grey500} />;
+    }
+
+    return <></>;
+  };
+
+  const showPasswordValidationIcon = () => {
+    if (hasPasswordMinLengthError) {
+      return <XCircleIcon stroke={colors.red500} />;
+    }
+
+    if (password && !hasPasswordMaxLengthError) {
+      if (hasPasswordPatternError) {
         return <XCircleIcon stroke={colors.red500} />;
       }
 
@@ -177,12 +222,10 @@ export function SignUp() {
                 />
                 <Spacing height={10} />
                 <PasswordInput
-                  validation={{}}
-                  value={''}
-                  onChange={() => {
-                    // eslint-disable-next-line no-console
-                    console.log('password');
-                  }}
+                  validation={formValidation.password}
+                  value={password}
+                  onChange={handlePasswordChange}
+                  rightIcon={showPasswordValidationIcon()}
                 />
                 <Spacing height={20} />
                 <Button
