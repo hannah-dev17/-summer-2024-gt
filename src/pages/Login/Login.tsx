@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import homeMockUp from '../../assets/images/home-mockup.png';
 import mainLogo from '../../assets/images/mainlogo.png';
-import googlePlayStoreBadge from '../../assets/images/google-play-badge.png';
-import appStoreBadge from '../../assets/images/app-store-badge.png';
 import { DefaultLayout } from '../../layout';
 import { colors } from '../../styles';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
-import { ReactComponent as KakaoIcon } from '../../assets/icons/kakao.svg';
 import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
-import { ID_LENGTH, KAKAO_AUTH_URL, PASSWORD_LENGTH } from '../../constants';
-import { InputField, Spacing } from '../../components';
+import { ID_LENGTH, PASSWORD_LENGTH } from '../../constants';
+import { InputField, Spacing, Text, Button, KakaoLoginButton, AppDownloadBadges } from '../../components';
 import { PasswordInput } from './components';
 import { AuthRepository } from '../../repositories';
 import { useSetRecoilState } from 'recoil';
@@ -101,10 +98,6 @@ export function Login() {
     password.length < PASSWORD_LENGTH.MIN ||
     password.length > PASSWORD_LENGTH.MAX;
 
-  const handleKakaoLoginClick = () => {
-    window.location.href = KAKAO_AUTH_URL;
-  };
-
   return (
     <DefaultLayout>
       <Wrapper>
@@ -139,11 +132,7 @@ export function Login() {
               or
             </Text>
             <Spacing height={10} />
-            <KakaoLoginButton onClick={handleKakaoLoginClick}>
-              <KakaoIcon />
-              <Spacing width={1} />
-              카카오 로그인
-            </KakaoLoginButton>
+            <KakaoLoginButton />
             <Spacing height={30} />
             <Text fontWeight={600} fontSize={14} lineHeight={20} color={colors.red500}>
               {errorMessage}
@@ -169,11 +158,7 @@ export function Login() {
             앱을 다운로드하세요.
           </Text>
           <Spacing height={10} />
-          <BadgeWrapper>
-            <BadgeImage src={googlePlayStoreBadge} alt='googlePlayStore' width={135} />
-            <Spacing width={10} />
-            <BadgeImage src={appStoreBadge} alt='appStore' width={120} />
-          </BadgeWrapper>
+          <AppDownloadBadges />
         </RightSideWrapper>
       </Wrapper>
     </DefaultLayout>
@@ -181,16 +166,6 @@ export function Login() {
 }
 
 const Form = styled.form``;
-
-const BadgeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const BadgeImage = styled.img<{ width: number }>`
-  width: ${props => `${props.width}px`};
-  height: 40px;
-`;
 
 const RightSideWrapper = styled.div`
   display: flex;
@@ -207,48 +182,6 @@ const SignUpGuideBox = styled.div`
   height: 86px;
   background: ${colors.white};
   border: 1px solid ${colors.grey200};
-`;
-
-const Text = styled.p<{ fontWeight: number; fontSize: number; lineHeight: number; color: string }>`
-  font-weight: ${props => `${props.fontWeight}`};
-  font-size: ${props => `${props.fontSize}px`};
-  line-height: ${props => `${props.lineHeight}px`};
-  text-align: center;
-  color: ${props => `${props.color}`};
-  margin: 0;
-`;
-
-const Button = styled.button<{ disabled: boolean }>`
-  width: 320px;
-  height: 44px;
-  border-radius: 30px;
-  background-color: ${props => (props.disabled ? colors.blue200 : colors.blue500)};
-  outline: 0;
-  border: none;
-  font-weight: 600;
-  font-size: 16px;
-  text-align: center;
-  line-height: 24px;
-  color: ${colors.white};
-  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
-`;
-
-const KakaoLoginButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 320px;
-  height: 44px;
-  background-color: ${colors.yellow500};
-  border-radius: 30px;
-  outline: 0;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: center;
-  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
