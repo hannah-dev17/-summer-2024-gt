@@ -110,6 +110,6 @@ const SelectItem = styled.li`
   }
 
   &:hover ${Icon} {
-    opacity: 1; /* 호버 시에 아이콘을 나타냄 */
+    opacity: 1;
   }
 `;

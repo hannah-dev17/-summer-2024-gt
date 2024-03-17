@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import homeMockUp from '../../assets/images/home-mockup.png';
 import { AppDownloadBadges, Spacing, Text } from '../../components';
 import { colors } from '../../styles';
-import { BirthDate } from './components';
+import { Terms } from './components';
 
 export function SignUp() {
   return (
@@ -14,7 +14,8 @@ export function SignUp() {
         <Spacing width={72} />
         <RightSideWrapper>
           {/* <BasicInfo /> */}
-          <BirthDate />
+          {/* <BirthDate /> */}
+          <Terms />
           <Spacing height={10} />
           <SignUpGuideBox>
             <Text fontWeight={600} fontSize={16} lineHeight={24} color={colors.grey500}>
