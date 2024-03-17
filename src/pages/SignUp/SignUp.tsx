@@ -12,10 +12,11 @@ import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
 import { ReactComponent as XCircleIcon } from '../../assets/icons/x-circle.svg';
 import { ReactComponent as CheckCircleIcon } from '../../assets/icons/check-circle.svg';
 import { PasswordInput } from './components';
-import { PHONE_LENGTH } from '../../constants';
+import { PHONE_LENGTH, REAL_NAME_LENGTH } from '../../constants';
 
 type ISignUpFormValues = {
   phone: string;
+  realName: string;
 };
 
 type IFormValidation = Record<keyof ISignUpFormValues, RegisterOptions>;
@@ -28,14 +29,20 @@ export function SignUp() {
 
   const hasPhoneMaxLengthError = errors.phone?.type === 'maxLength';
   const hasPhonePatternError = errors.phone?.type === 'pattern';
+  const hasRealNameMaxLengthError = errors.realName?.type === 'maxLength';
 
   const [phone, setPhone] = useState<string>('');
+  const [realName, setRealName] = useState<string>('');
 
   const formValidation: IFormValidation = {
     phone: {
       required: true,
       maxLength: 20,
       pattern: /^\d{3}-\d{3,4}-\d{4}$/,
+    },
+    realName: {
+      required: true,
+      maxLength: 20,
     },
   };
 
@@ -49,6 +56,16 @@ export function SignUp() {
     setPhone(value);
   };
 
+  const handleRealNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.length > REAL_NAME_LENGTH.MAX) {
+      return;
+    }
+
+    setRealName(value);
+  };
+
   const showPhoneValidationIcon = () => {
     if (phone && !hasPhoneMaxLengthError) {
       if (hasPhonePatternError) {
@@ -60,6 +77,14 @@ export function SignUp() {
 
     if (hasPhoneMaxLengthError) {
       return <XCircleIcon stroke={colors.red500} />;
+    }
+
+    return <></>;
+  };
+
+  const showRealNameValidationIcon = () => {
+    if (realName && !hasRealNameMaxLengthError) {
+      return <CheckCircleIcon stroke={colors.grey500} />;
     }
 
     return <></>;
@@ -103,12 +128,10 @@ export function SignUp() {
                   label='realName'
                   leftIconComponent={<UserIcon stroke={colors.grey500} />}
                   placeholder='성명'
-                  validation={{}}
-                  onChange={() => {
-                    // eslint-disable-next-line no-console
-                    console.log('change');
-                  }}
-                  value={''}
+                  validation={formValidation.realName}
+                  onChange={handleRealNameChange}
+                  value={realName}
+                  rightComponent={showRealNameValidationIcon()}
                 />
                 <Spacing height={10} />
                 <InputField

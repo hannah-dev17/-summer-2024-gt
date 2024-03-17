@@ -11,3 +11,7 @@ export const PASSWORD_LENGTH = {
 export const PHONE_LENGTH = {
   MAX: 20,
 };
+
+export const REAL_NAME_LENGTH = {
+  MAX: 20,
+};
