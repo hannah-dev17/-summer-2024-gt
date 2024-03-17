@@ -12,11 +12,12 @@ import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
 import { ReactComponent as XCircleIcon } from '../../assets/icons/x-circle.svg';
 import { ReactComponent as CheckCircleIcon } from '../../assets/icons/check-circle.svg';
 import { PasswordInput } from './components';
-import { PHONE_LENGTH, REAL_NAME_LENGTH } from '../../constants';
+import { ID_LENGTH, PHONE_LENGTH, REAL_NAME_LENGTH } from '../../constants';
 
 type ISignUpFormValues = {
   phone: string;
   realName: string;
+  loginId: string;
 };
 
 type IFormValidation = Record<keyof ISignUpFormValues, RegisterOptions>;
@@ -30,9 +31,12 @@ export function SignUp() {
   const hasPhoneMaxLengthError = errors.phone?.type === 'maxLength';
   const hasPhonePatternError = errors.phone?.type === 'pattern';
   const hasRealNameMaxLengthError = errors.realName?.type === 'maxLength';
+  const hasLoginIdMaxLengthError = errors.loginId?.type === 'maxLength';
+  const hasLoginIdPatternError = errors.loginId?.type === 'pattern';
 
   const [phone, setPhone] = useState<string>('');
   const [realName, setRealName] = useState<string>('');
+  const [loginId, setLoginId] = useState<string>('');
 
   const formValidation: IFormValidation = {
     phone: {
@@ -43,6 +47,11 @@ export function SignUp() {
     realName: {
       required: true,
       maxLength: 20,
+    },
+    loginId: {
+      required: true,
+      maxLength: 20,
+      pattern: /^[a-z0-9_.]+$/,
     },
   };
 
@@ -66,6 +75,16 @@ export function SignUp() {
     setRealName(value);
   };
 
+  const handleLoginIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.length > ID_LENGTH.MAX) {
+      return;
+    }
+
+    setLoginId(value);
+  };
+
   const showPhoneValidationIcon = () => {
     if (phone && !hasPhoneMaxLengthError) {
       if (hasPhonePatternError) {
@@ -84,6 +103,18 @@ export function SignUp() {
 
   const showRealNameValidationIcon = () => {
     if (realName && !hasRealNameMaxLengthError) {
+      return <CheckCircleIcon stroke={colors.grey500} />;
+    }
+
+    return <></>;
+  };
+
+  const showLoginIdValidationIcon = () => {
+    if (loginId && !hasLoginIdMaxLengthError) {
+      if (hasLoginIdPatternError) {
+        return <XCircleIcon stroke={colors.red500} />;
+      }
+
       return <CheckCircleIcon stroke={colors.grey500} />;
     }
 
@@ -139,12 +170,10 @@ export function SignUp() {
                   label='loginId'
                   leftIconComponent={<SettingsIcon stroke={colors.grey500} />}
                   placeholder='사용자 이름'
-                  validation={{}}
-                  onChange={() => {
-                    // eslint-disable-next-line no-console
-                    console.log('change');
-                  }}
-                  value={''}
+                  validation={formValidation.loginId}
+                  onChange={handleLoginIdChange}
+                  value={loginId}
+                  rightComponent={showLoginIdValidationIcon()}
                 />
                 <Spacing height={10} />
                 <PasswordInput
