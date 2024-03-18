@@ -1,14 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../styles';
 import { Button, Spacing, Text } from '../../../components';
 import CheckIcon from '../../../assets/icons/check.svg';
+import { useRecoilState } from 'recoil';
+import { isAllAgreedState, isDataPolicyAgreedState, isLocationAgreedState, isTermAgreedState } from '../../../recoil';
 
 export function Terms() {
+  const [isAllAgreed, setIsAllAgreed] = useRecoilState(isAllAgreedState);
+  const [isTermAgreed, setIsTermAgreed] = useRecoilState(isTermAgreedState);
+  const [isDataPolicyAgreed, setIsDataPolicyAgreed] = useRecoilState(isDataPolicyAgreedState);
+  const [isLocationAgreed, setIsLocationAgreed] = useRecoilState(isLocationAgreedState);
+
   const handleNextButtonClick = () => {
     // eslint-disable-next-line no-console
     console.log('hello');
   };
+
+  const handleAllCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setIsAllAgreed(true);
+      setIsTermAgreed(true);
+      setIsDataPolicyAgreed(true);
+      setIsLocationAgreed(true);
+      return;
+    }
+
+    if (!event.target.checked) {
+      setIsAllAgreed(false);
+      setIsTermAgreed(false);
+      setIsDataPolicyAgreed(false);
+      setIsLocationAgreed(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isTermAgreed && isDataPolicyAgreed && isLocationAgreed) {
+      setIsAllAgreed(true);
+    } else {
+      setIsAllAgreed(false);
+    }
+  }, [isTermAgreed, isDataPolicyAgreed, isLocationAgreed, setIsAllAgreed]);
 
   return (
     <Box>
@@ -28,7 +60,7 @@ export function Terms() {
           이용약관 3개에 모두 동의
         </Text>
         <Label>
-          <Checkbox type='checkbox' />
+          <Checkbox type='checkbox' checked={isAllAgreed} onChange={handleAllCheckboxChange} />
         </Label>
       </TermWrapper>
       <Divider />
@@ -43,7 +75,7 @@ export function Terms() {
           </Text>
         </LeftSide>
         <Label>
-          <Checkbox type='checkbox' />
+          <Checkbox type='checkbox' checked={isTermAgreed} onChange={() => setIsTermAgreed(prev => !prev)} />
         </Label>
       </TermWrapper>
       <Spacing height={10} />
@@ -57,7 +89,11 @@ export function Terms() {
           </Text>
         </LeftSide>
         <Label>
-          <Checkbox type='checkbox' />
+          <Checkbox
+            type='checkbox'
+            checked={isDataPolicyAgreed}
+            onChange={() => setIsDataPolicyAgreed(prev => !prev)}
+          />
         </Label>
       </TermWrapper>
       <Spacing height={10} />
@@ -71,7 +107,7 @@ export function Terms() {
           </Text>
         </LeftSide>
         <Label>
-          <Checkbox type='checkbox' />
+          <Checkbox type='checkbox' checked={isLocationAgreed} onChange={() => setIsLocationAgreed(prev => !prev)} />
         </Label>
       </TermWrapper>
       <Spacing height={34} />
