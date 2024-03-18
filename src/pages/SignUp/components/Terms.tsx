@@ -5,16 +5,21 @@ import { Button, Spacing, Text } from '../../../components';
 import CheckIcon from '../../../assets/icons/check.svg';
 import { useRecoilState } from 'recoil';
 import { isAllAgreedState, isDataPolicyAgreedState, isLocationAgreedState, isTermAgreedState } from '../../../recoil';
+import { useNavigate } from 'react-router-dom';
+import { loginPath } from '../../../constants';
 
 export function Terms() {
+  const navigate = useNavigate();
+
   const [isAllAgreed, setIsAllAgreed] = useRecoilState(isAllAgreedState);
   const [isTermAgreed, setIsTermAgreed] = useRecoilState(isTermAgreedState);
   const [isDataPolicyAgreed, setIsDataPolicyAgreed] = useRecoilState(isDataPolicyAgreedState);
   const [isLocationAgreed, setIsLocationAgreed] = useRecoilState(isLocationAgreedState);
 
+  const isNextButtonDisabled = !isAllAgreed;
+
   const handleNextButtonClick = () => {
-    // eslint-disable-next-line no-console
-    console.log('hello');
+    navigate(loginPath);
   };
 
   const handleAllCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,7 +116,7 @@ export function Terms() {
         </Label>
       </TermWrapper>
       <Spacing height={34} />
-      <Button type='button' disabled={false} onClick={handleNextButtonClick}>
+      <Button type='button' disabled={isNextButtonDisabled} onClick={handleNextButtonClick}>
         다음
       </Button>
       <Spacing height={10} />
