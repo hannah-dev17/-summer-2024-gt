@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Login, LoginKakao, SignUp } from './pages';
-import { loginPath, loginKakaoPath, signUpPath } from './constants';
+import { loginPath, loginKakaoPath, signUpPath, boardPath } from './constants';
+import { PrivateRoute } from './overrides';
 
 const loading = <div>화면을 불러오는 중 입니다.</div>;
 
@@ -18,6 +19,14 @@ function App() {
           <Route path={loginPath} element={<Login />} />
           <Route path={loginKakaoPath} element={<LoginKakao />} />
           <Route path={signUpPath} element={<SignUp />} />
+          <Route
+            path={boardPath}
+            element={
+              <PrivateRoute>
+                <></>
+              </PrivateRoute>
+            }
+          />
           <Route path='/404' element={<Page404 />} />
           <Route path='/500' element={<Page500 />} />
         </Routes>

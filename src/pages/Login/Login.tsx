@@ -6,15 +6,16 @@ import { DefaultLayout } from '../../layout';
 import { colors } from '../../styles';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
-import { ID_LENGTH, PASSWORD_LENGTH } from '../../constants';
+import { ID_LENGTH, PASSWORD_LENGTH, boardPath } from '../../constants';
 import { InputField, Spacing, Text, Button, KakaoLoginButton, AppDownloadBadges } from '../../components';
 import { PasswordInput } from './components';
-import { AuthRepository } from '../../repositories';
 import { useSetRecoilState } from 'recoil';
 import { authState } from '../../recoil';
 import { JWT_KEY } from '../../config/constant';
 import { ErrorResponse } from '../../types';
 import axios from 'axios';
+import { useSignIn } from '../../quries';
+import { useNavigate } from 'react-router-dom';
 
 type ILoginFormValues = {
   id: string;
@@ -24,6 +25,8 @@ type ILoginFormValues = {
 type IFormValidation = Record<keyof ILoginFormValues, RegisterOptions>;
 
 export function Login() {
+  const navigate = useNavigate();
+  const signInQuery = useSignIn();
   const formMethods = useForm<ILoginFormValues>({ defaultValues: { id: '', password: '' }, mode: 'onChange' });
 
   const [id, setId] = useState<string>('');
@@ -33,26 +36,33 @@ export function Login() {
   const setAuthState = useSetRecoilState(authState);
 
   const signIn = async (loginId: string, password: string) => {
-    try {
-      const response = await AuthRepository.signIn({ loginId, password });
+    signInQuery.mutate(
+      { loginId, password },
+      {
+        onSuccess: response => {
+          setAuthState(response.result);
+          localStorage.setItem(JWT_KEY, response.result.jwt);
 
-      setAuthState(response.result);
-      localStorage.setItem(JWT_KEY, response.result.jwt);
+          if (errorMessage) {
+            setErrorMessage('');
+          }
 
-      if (errorMessage) {
-        setErrorMessage('');
-      }
-    } catch (error) {
-      if (axios.isAxiosError<ErrorResponse>(error) && error.response) {
-        const { statusCode, message } = error.response.data;
+          navigate(boardPath);
+        },
+        onError: error => {
+          if (axios.isAxiosError<ErrorResponse>(error) && error.response) {
+            const { statusCode, message } = error.response.data;
 
-        if (statusCode === 404) {
-          setErrorMessage(message[0]);
-        }
-      }
-      // eslint-disable-next-line no-console
-      console.log('error', error);
-    }
+            if (statusCode === 404) {
+              setErrorMessage(message[0]);
+            }
+          }
+
+          // eslint-disable-next-line no-console
+          console.log('error', error);
+        },
+      },
+    );
   };
 
   const onSubmit = (data: ILoginFormValues) => {
