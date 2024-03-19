@@ -28,6 +28,16 @@ const signUpState = atom({
   },
 });
 
+export const basicInfoState = selector({
+  key: 'basicInfoState',
+  get: ({ get }) => {
+    const { loginId, password, realName, phone } = get(signUpState);
+
+    return { loginId, password, realName, phone };
+  },
+  set: ({ get, set }, basicInfo) => set(signUpState, { ...get(signUpState), ...basicInfo }),
+});
+
 export const birthDateState = selector({
   key: 'birthDateState',
   get: ({ get }) => get(signUpState).birthDate,

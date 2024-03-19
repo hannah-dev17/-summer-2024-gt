@@ -12,6 +12,8 @@ import { ReactComponent as UserIcon } from '../../../assets/icons/user.svg';
 import { ReactComponent as XCircleIcon } from '../../../assets/icons/x-circle.svg';
 import { ReactComponent as CheckCircleIcon } from '../../../assets/icons/check-circle.svg';
 import { SubPage } from '../types';
+import { useRecoilState } from 'recoil';
+import { basicInfoState } from '../../../recoil';
 
 type ISignUpFormValues = {
   phone: string;
@@ -27,13 +29,15 @@ type BasicInfoProps = {
 };
 
 export function BasicInfo({ showSubPage }: BasicInfoProps) {
+  const [basicInfo, setBasicInfo] = useRecoilState(basicInfoState);
+
   const formMethods = useForm<ISignUpFormValues>({
     mode: 'onChange',
     defaultValues: {
-      phone: '',
-      realName: '',
-      loginId: '',
-      password: '',
+      phone: basicInfo.phone || '',
+      realName: basicInfo.realName || '',
+      loginId: basicInfo.loginId || '',
+      password: basicInfo.password || '',
     },
   });
   const {
@@ -51,10 +55,10 @@ export function BasicInfo({ showSubPage }: BasicInfoProps) {
 
   const isButtonDisabled = Object.keys(errors).length !== 0;
 
-  const [phone, setPhone] = useState<string>('');
-  const [realName, setRealName] = useState<string>('');
-  const [loginId, setLoginId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [phone, setPhone] = useState<string>(basicInfo.phone || '');
+  const [realName, setRealName] = useState<string>(basicInfo.realName || '');
+  const [loginId, setLoginId] = useState<string>(basicInfo.loginId || '');
+  const [password, setPassword] = useState<string>(basicInfo.password || '');
 
   const formValidation: IFormValidation = {
     phone: {
@@ -174,6 +178,7 @@ export function BasicInfo({ showSubPage }: BasicInfoProps) {
   const handleSignUpButtonClick = (data: ISignUpFormValues) => {
     // eslint-disable-next-line no-console
     console.log('data', data);
+    setBasicInfo(data);
     showSubPage('birthDate');
   };
 
