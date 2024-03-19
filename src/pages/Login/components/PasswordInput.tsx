@@ -9,9 +9,10 @@ type PasswordInputProps = {
   validation: RegisterOptions;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
+  onKeyUp: (event: React.KeyboardEvent<HTMLElement>) => void;
 };
 
-export function PasswordInput({ validation, onChange, value }: PasswordInputProps) {
+export function PasswordInput({ validation, onChange, value, onKeyUp }: PasswordInputProps) {
   const [passwordInputType, setPasswordInputType] = useState<'password' | 'text'>('password');
 
   const handleRightLabelClick = () => {
@@ -38,6 +39,7 @@ export function PasswordInput({ validation, onChange, value }: PasswordInputProp
           </RightLabel>
         )
       }
+      onKeyUp={onKeyUp}
     />
   );
 }

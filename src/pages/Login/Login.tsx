@@ -65,6 +65,14 @@ export function Login() {
     );
   };
 
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
+    const key = event.key;
+
+    if (key === 'Enter') {
+      signIn(id, password);
+    }
+  };
+
   const onSubmit = (data: ILoginFormValues) => {
     signIn(data.id, data.password);
   };
@@ -130,7 +138,12 @@ export function Login() {
                   value={id}
                 />
                 <Spacing height={10} />
-                <PasswordInput validation={formValidation.password} value={password} onChange={handlePasswordChange} />
+                <PasswordInput
+                  validation={formValidation.password}
+                  value={password}
+                  onChange={handlePasswordChange}
+                  onKeyUp={handleKeyUp}
+                />
                 <Spacing height={20} />
                 <Button type='button' disabled={isButtonDisabled} onClick={formMethods.handleSubmit(onSubmit)}>
                   로그인

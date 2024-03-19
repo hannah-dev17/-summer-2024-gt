@@ -13,6 +13,7 @@ type InputFieldProps<IFormValues> = {
   validation: RegisterOptions;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
+  onKeyUp?: (event: React.KeyboardEvent<HTMLElement>) => void;
 };
 
 export function InputField<IFormValues>({
@@ -24,6 +25,7 @@ export function InputField<IFormValues>({
   validation,
   value,
   onChange,
+  onKeyUp,
 }: InputFieldProps<IFormValues>) {
   const formMethods = useFormContext();
 
@@ -38,6 +40,7 @@ export function InputField<IFormValues>({
           placeholder={placeholder}
           {...formMethods.register(label, { ...validation, onChange })}
           value={value}
+          onKeyUp={onKeyUp}
         />
       </LeftSideWrapper>
       {rightComponent && (
