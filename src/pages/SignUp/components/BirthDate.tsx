@@ -6,6 +6,8 @@ import cakeImage from '../../../assets/images/cake.png';
 import { InputDropdown } from './InputDropdown';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { birthDateState, dayState, monthState, yearState } from '../../../recoil';
+import { SubPage } from '../types';
+import { LinkText } from './LinkText';
 
 const months = Array.from({ length: 12 }, (_, index) => ({ value: index + 1, text: `${index + 1}월` }));
 const days = Array.from({ length: 31 }, (_, index) => ({ value: index + 1, text: `${index + 1}일` }));
@@ -18,7 +20,11 @@ const years = Array.from({ length: endYear - startYear + 1 }, (_, index) => ({
   text: `${startYear + index}년`,
 }));
 
-export function BirthDate() {
+type BirthDateProps = {
+  showSubPage: (value: SubPage) => void;
+};
+
+export function BirthDate({ showSubPage }: BirthDateProps) {
   const yearValue = useRecoilValue(yearState);
   const monthValue = useRecoilValue(monthState);
   const dayValue = useRecoilValue(dayState);
@@ -50,7 +56,8 @@ export function BirthDate() {
   };
 
   const handleNextButtonClick = () => {
-    setBirthDate(`${year}-${month}-${day}`);
+    setBirthDate(`${year.value}-${month.value}-${day.value}`);
+    showSubPage('terms');
   };
 
   const isButtonDisabled = year.value > 2015;
@@ -88,9 +95,11 @@ export function BirthDate() {
         다음
       </Button>
       <Spacing height={10} />
-      <Text color={colors.blue500} fontWeight={600} fontSize={16} lineHeight={24}>
-        돌아가기
-      </Text>
+      <LinkText onClick={() => showSubPage('basic')}>
+        <Text color={colors.blue500} fontWeight={600} fontSize={16} lineHeight={24}>
+          돌아가기
+        </Text>
+      </LinkText>
     </Box>
   );
 }

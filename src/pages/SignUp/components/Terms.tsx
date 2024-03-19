@@ -7,8 +7,14 @@ import { useRecoilState } from 'recoil';
 import { isAllAgreedState, isDataPolicyAgreedState, isLocationAgreedState, isTermAgreedState } from '../../../recoil';
 import { useNavigate } from 'react-router-dom';
 import { loginPath } from '../../../constants';
+import { SubPage } from '../types';
+import { LinkText } from './LinkText';
 
-export function Terms() {
+type TermsProps = {
+  showSubPage: (value: SubPage) => void;
+};
+
+export function Terms({ showSubPage }: TermsProps) {
   const navigate = useNavigate();
 
   const [isAllAgreed, setIsAllAgreed] = useRecoilState(isAllAgreedState);
@@ -120,9 +126,11 @@ export function Terms() {
         다음
       </Button>
       <Spacing height={10} />
-      <Text color={colors.blue500} fontWeight={600} fontSize={16} lineHeight={24}>
-        돌아가기
-      </Text>
+      <LinkText onClick={() => showSubPage('birthDate')}>
+        <Text color={colors.blue500} fontWeight={600} fontSize={16} lineHeight={24}>
+          돌아가기
+        </Text>
+      </LinkText>
     </Box>
   );
 }

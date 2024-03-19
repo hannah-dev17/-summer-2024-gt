@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DefaultLayout } from '../../layout';
 import styled from 'styled-components';
 import homeMockUp from '../../assets/images/home-mockup.png';
 import { AppDownloadBadges, Spacing, Text } from '../../components';
 import { colors } from '../../styles';
-import { Terms } from './components';
+import { BasicInfo, BirthDate, Terms } from './components';
+import { SubPage } from './types';
 
 export function SignUp() {
+  const [subPage, setSubPage] = useState<SubPage>('basic');
+
+  const showSubPage = (value: SubPage) => {
+    setSubPage(value);
+  };
+
   return (
     <DefaultLayout>
       <Wrapper>
         <MockUpImage src={homeMockUp} alt='mockup' />
         <Spacing width={72} />
         <RightSideWrapper>
-          {/* <BasicInfo /> */}
-          {/* <BirthDate /> */}
-          <Terms />
+          {subPage === 'basic' && <BasicInfo showSubPage={showSubPage} />}
+          {subPage === 'birthDate' && <BirthDate showSubPage={showSubPage} />}
+          {subPage === 'terms' && <Terms showSubPage={showSubPage} />}
           <Spacing height={10} />
           <SignUpGuideBox>
             <Text fontWeight={600} fontSize={16} lineHeight={24} color={colors.grey500}>

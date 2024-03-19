@@ -11,6 +11,7 @@ import { ReactComponent as SettingsIcon } from '../../../assets/icons/settings.s
 import { ReactComponent as UserIcon } from '../../../assets/icons/user.svg';
 import { ReactComponent as XCircleIcon } from '../../../assets/icons/x-circle.svg';
 import { ReactComponent as CheckCircleIcon } from '../../../assets/icons/check-circle.svg';
+import { SubPage } from '../types';
 
 type ISignUpFormValues = {
   phone: string;
@@ -21,7 +22,11 @@ type ISignUpFormValues = {
 
 type IFormValidation = Record<keyof ISignUpFormValues, RegisterOptions>;
 
-export function BasicInfo() {
+type BasicInfoProps = {
+  showSubPage: (value: SubPage) => void;
+};
+
+export function BasicInfo({ showSubPage }: BasicInfoProps) {
   const formMethods = useForm<ISignUpFormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -169,6 +174,7 @@ export function BasicInfo() {
   const handleSignUpButtonClick = (data: ISignUpFormValues) => {
     // eslint-disable-next-line no-console
     console.log('data', data);
+    showSubPage('birthDate');
   };
 
   return (
