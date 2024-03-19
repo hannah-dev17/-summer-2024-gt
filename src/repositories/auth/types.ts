@@ -25,3 +25,16 @@ export type SignInByKakaoResponse = {
   id: number;
   jwt: string;
 };
+
+export type SignUpBody = {
+  loginId: string;
+  password: string;
+  realName: string;
+  phone: string;
+  birthDate: string;
+};
+
+export type SignUpResponse = {
+  id: number;
+  loginId: string;
+};

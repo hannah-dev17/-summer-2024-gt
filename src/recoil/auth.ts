@@ -17,7 +17,7 @@ export const isAuthenticatedState = selector({
   },
 });
 
-const signUpState = atom({
+export const signUpState = atom({
   key: 'signUpState',
   default: {
     loginId: '',

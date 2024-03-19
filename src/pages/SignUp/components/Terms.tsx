@@ -3,12 +3,19 @@ import styled from 'styled-components';
 import { colors } from '../../../styles';
 import { Button, Spacing, Text } from '../../../components';
 import CheckIcon from '../../../assets/icons/check.svg';
-import { useRecoilState } from 'recoil';
-import { isAllAgreedState, isDataPolicyAgreedState, isLocationAgreedState, isTermAgreedState } from '../../../recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  isAllAgreedState,
+  isDataPolicyAgreedState,
+  isLocationAgreedState,
+  isTermAgreedState,
+  signUpState,
+} from '../../../recoil';
 import { useNavigate } from 'react-router-dom';
 import { loginPath } from '../../../constants';
 import { SubPage } from '../types';
 import { LinkText } from './LinkText';
+import { useSignUp } from '../../../quries';
 
 type TermsProps = {
   showSubPage: (value: SubPage) => void;
@@ -16,6 +23,8 @@ type TermsProps = {
 
 export function Terms({ showSubPage }: TermsProps) {
   const navigate = useNavigate();
+  const signUpQuery = useSignUp();
+  const signUpInfo = useRecoilValue(signUpState);
 
   const [isAllAgreed, setIsAllAgreed] = useRecoilState(isAllAgreedState);
   const [isTermAgreed, setIsTermAgreed] = useRecoilState(isTermAgreedState);
@@ -24,8 +33,20 @@ export function Terms({ showSubPage }: TermsProps) {
 
   const isNextButtonDisabled = !isAllAgreed;
 
+  const signUp = () => {
+    signUpQuery.mutate(signUpInfo, {
+      onSuccess: () => {
+        navigate(loginPath);
+      },
+      onError: error => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      },
+    });
+  };
+
   const handleNextButtonClick = () => {
-    navigate(loginPath);
+    signUp();
   };
 
   const handleAllCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
