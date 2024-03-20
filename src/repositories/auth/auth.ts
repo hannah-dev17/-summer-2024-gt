@@ -8,6 +8,9 @@ import {
   SignInByKakaoResponse,
   SignInResponse,
   SignUpBody,
+  SignUpByKakaoBody,
+  SignUpByKakaoQueryParams,
+  SignUpByKakaoResponse,
   SignUpResponse,
   VerifyJwtTokenBody,
   VeryfiJwtTokenResponse,
@@ -28,5 +31,12 @@ export class AuthRepository {
 
   static signUp(body: SignUpBody): Promise<ResponseOK<SignUpResponse>> {
     return request.post(ENDPOINT.AUTH.SIGN_UP, body);
+  }
+
+  static signUpByKakaoCode(
+    body: SignUpByKakaoBody,
+    queryParams: SignUpByKakaoQueryParams,
+  ): Promise<ResponseOK<SignUpByKakaoResponse>> {
+    return request.post(ENDPOINT.AUTH.KAKAO_SIGN_IN_BY_CODE, body, { params: queryParams });
   }
 }

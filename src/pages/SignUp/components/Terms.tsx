@@ -11,11 +11,11 @@ import {
   isTermAgreedState,
   signUpState,
 } from '../../../recoil';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { loginPath } from '../../../constants';
 import { SubPage } from '../types';
 import { LinkText } from './LinkText';
-import { useSignUp } from '../../../quries';
+import { useKakaoSignUp, useSignUp } from '../../../quries';
 
 type TermsProps = {
   showSubPage: (value: SubPage) => void;
@@ -23,7 +23,9 @@ type TermsProps = {
 
 export function Terms({ showSubPage }: TermsProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const signUpQuery = useSignUp();
+  const kakaoSignUpQuery = useKakaoSignUp();
   const signUpInfo = useRecoilValue(signUpState);
 
   const [isAllAgreed, setIsAllAgreed] = useRecoilState(isAllAgreedState);
@@ -45,8 +47,31 @@ export function Terms({ showSubPage }: TermsProps) {
     });
   };
 
+  const signUpByKakao = () => {
+    if (!location.state?.code) {
+      return;
+    }
+
+    kakaoSignUpQuery.mutate(
+      { ...signUpInfo, code: location.state.code },
+      {
+        onSuccess: () => {
+          navigate(loginPath);
+        },
+        onError: error => {
+          // eslint-disable-next-line no-console
+          console.error(error);
+        },
+      },
+    );
+  };
+
   const handleNextButtonClick = () => {
-    signUp();
+    if (location.state?.signInType === 'kakao') {
+      signUpByKakao();
+    } else {
+      signUp();
+    }
   };
 
   const handleAllCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {

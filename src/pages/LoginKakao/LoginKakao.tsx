@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { JWT_KEY } from '../../config/constant';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,7 +9,7 @@ export function LoginKakao() {
   const navigate = useNavigate();
   const kakaoSignInQuery = useKakaoSignIn();
 
-  useEffect(() => {
+  const signIn = useCallback(() => {
     const code = new URL(window.location.href).searchParams.get('code');
 
     if (!code) {
@@ -30,13 +30,18 @@ export function LoginKakao() {
             const { statusCode } = error.response.data;
 
             if (statusCode === 400 || statusCode === 404) {
-              navigate('/sign-up');
+              navigate('/sign-up', { state: { signInType: 'kakao', code } });
             }
           }
         },
       },
     );
   }, [kakaoSignInQuery, navigate]);
+
+  useEffect(() => {
+    signIn();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <></>;
 }

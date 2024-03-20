@@ -38,3 +38,20 @@ export type SignUpResponse = {
   id: number;
   loginId: string;
 };
+
+export type SignUpByKakaoBody = {
+  loginId: string;
+  password: string;
+  realName: string;
+  phone: string;
+  birthDate: string;
+};
+
+export type SignUpByKakaoQueryParams = {
+  code: string;
+};
+
+export type SignUpByKakaoResponse = {
+  id: number;
+  loginId: string;
+};
