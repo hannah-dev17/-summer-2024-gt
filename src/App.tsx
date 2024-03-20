@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Login, LoginKakao, SignUp } from './pages';
+import { Login, LoginKakao, SignUp, Board } from './pages';
 import { loginPath, loginKakaoPath, signUpPath, boardPath } from './constants';
 import { PrivateRoute } from './overrides';
 
@@ -23,7 +23,7 @@ function App() {
             path={boardPath}
             element={
               <PrivateRoute>
-                <></>
+                <Board />
               </PrivateRoute>
             }
           />
