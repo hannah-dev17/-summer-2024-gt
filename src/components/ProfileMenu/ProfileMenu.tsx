@@ -7,8 +7,19 @@ import { ReactComponent as SettingsIcon } from '../../assets/icons/settings.svg'
 import { ReactComponent as AlertCircleIcon } from '../../assets/icons/alert-circle.svg';
 import { Spacing } from '../Spacing';
 import { Text } from '../Text';
+import { JWT_KEY } from '../../config/constant';
+import { useNavigate } from 'react-router-dom';
+import { loginPath } from '../../constants';
 
 export function ProfileMenu() {
+  const navigate = useNavigate();
+
+  const handleLogoutClick = () => {
+    localStorage.removeItem(JWT_KEY);
+
+    navigate(loginPath);
+  };
+
   return (
     <Wrapper>
       <Spacing height={20} />
@@ -47,9 +58,11 @@ export function ProfileMenu() {
       <MenuItem>
         <SettingsIcon width={24} height={24} stroke={colors.grey900} />
         <Spacing width={20} />
-        <Text color={colors.grey900} fontSize={16} fontWeight={700} lineHeight={24}>
-          로그아웃
-        </Text>
+        <TextWrapper onClick={handleLogoutClick}>
+          <Text color={colors.grey900} fontSize={16} fontWeight={700} lineHeight={24}>
+            로그아웃
+          </Text>
+        </TextWrapper>
       </MenuItem>
       <Spacing height={20} />
     </Wrapper>
@@ -74,4 +87,8 @@ const MenuItem = styled.div`
   width: 240px;
   height: 48px;
   margin: 0 20px;
+`;
+
+const TextWrapper = styled.div`
+  cursor: pointer;
 `;
