@@ -6,7 +6,7 @@ import { DefaultLayout } from '../../layout';
 import { colors } from '../../styles';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { FormProvider, RegisterOptions, useForm } from 'react-hook-form';
-import { ID_LENGTH, PASSWORD_LENGTH, boardPath } from '../../constants';
+import { ID_LENGTH, PASSWORD_LENGTH, boardPath, signUpPath } from '../../constants';
 import { InputField, Spacing, Text, Button, KakaoLoginButton, AppDownloadBadges } from '../../components';
 import { PasswordInput } from './components';
 import { useSetRecoilState } from 'recoil';
@@ -16,6 +16,7 @@ import { ErrorResponse } from '../../types';
 import axios from 'axios';
 import { useSignIn } from '../../quries';
 import { useNavigate } from 'react-router-dom';
+import { LinkText } from '../SignUp/components';
 
 type ILoginFormValues = {
   id: string;
@@ -116,6 +117,10 @@ export function Login() {
     password.length < PASSWORD_LENGTH.MIN ||
     password.length > PASSWORD_LENGTH.MAX;
 
+  const handleSignUpClick = () => {
+    navigate(signUpPath);
+  };
+
   return (
     <DefaultLayout>
       <Wrapper>
@@ -172,9 +177,11 @@ export function Login() {
               계정이 없으신가요?
             </Text>
             <Spacing width={5} />
-            <Text fontWeight={600} fontSize={16} lineHeight={24} color={colors.blue500}>
-              가입하기
-            </Text>
+            <LinkText onClick={handleSignUpClick}>
+              <Text fontWeight={600} fontSize={16} lineHeight={24} color={colors.blue500}>
+                가입하기
+              </Text>
+            </LinkText>
           </SignUpGuideBox>
           <Spacing height={20} />
           <Text fontWeight={500} fontSize={16} lineHeight={24} color={colors.grey500}>

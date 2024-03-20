@@ -4,14 +4,21 @@ import styled from 'styled-components';
 import homeMockUp from '../../assets/images/home-mockup.png';
 import { AppDownloadBadges, Spacing, Text } from '../../components';
 import { colors } from '../../styles';
-import { BasicInfo, BirthDate, Terms } from './components';
+import { BasicInfo, BirthDate, LinkText, Terms } from './components';
 import { SubPage } from './types';
+import { useNavigate } from 'react-router-dom';
+import { loginPath } from '../../constants';
 
 export function SignUp() {
+  const navigate = useNavigate();
   const [subPage, setSubPage] = useState<SubPage>('basic');
 
   const showSubPage = (value: SubPage) => {
     setSubPage(value);
+  };
+
+  const handleLoginClick = () => {
+    navigate(loginPath);
   };
 
   return (
@@ -29,9 +36,11 @@ export function SignUp() {
               계정이 있으신가요?
             </Text>
             <Spacing width={5} />
-            <Text fontWeight={600} fontSize={16} lineHeight={24} color={colors.blue500}>
-              로그인
-            </Text>
+            <LinkText onClick={handleLoginClick}>
+              <Text fontWeight={600} fontSize={16} lineHeight={24} color={colors.blue500}>
+                로그인
+              </Text>
+            </LinkText>
           </SignUpGuideBox>
           <Spacing height={20} />
           <Text fontWeight={500} fontSize={16} lineHeight={24} color={colors.grey500}>
