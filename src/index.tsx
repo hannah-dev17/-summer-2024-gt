@@ -1,17 +1,22 @@
 import React, { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
 import { RecoilRoot } from 'recoil';
 import 'react-app-polyfill/stable';
 import { GlobalStyle } from './components/styles';
-// 이외에 필요한 스타일 파일이 있다면 import 해주세요.
+import ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-ReactDOM.render(
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
+root.render(
   <StrictMode>
-    <RecoilRoot>
-      <GlobalStyle />
-      <App />
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <GlobalStyle />
+        <App />
+      </RecoilRoot>
+    </QueryClientProvider>
   </StrictMode>,
-  document.getElementById('root'),
 );

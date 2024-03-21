@@ -1,41 +1,30 @@
 import React from 'react';
-import AppHeader from '../components/Header';
-import AppContent from '../components/Content';
-import AppFooter from '../components/Footer';
 import styled from 'styled-components';
-import { supportDeviceSize } from '../components/styles';
+import { colors } from '../styles';
 
-const DefaultLayout = () => {
-  /*const navigate = useNavigate()
+type DefaultLayoutProps = {
+  children: React.ReactNode;
+};
 
-  // 페이지 첫 로딩시 로직
-  useEffect(() => {
-    // 벨리데이션
-    if (!user.name) {
-      alert('로그인을 해주세요')
-      navigate('/login')
-    }
-  }, [])*/
-
+export function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
     <Root>
-      <AppHeader />
-      <AppContent />
-      <AppFooter />
+      <Box>{children}</Box>
     </Root>
   );
-};
+}
 
 const Root = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 1080px;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
   height: 100vh;
-  background-color: green;
-
-  @media all and (max-width: ${supportDeviceSize}px) {
-    width: 100vw;
-  }
 `;
 
-export default DefaultLayout;
+const Box = styled.div`
+  display: flex;
+  width: 1440px;
+  height: 1024px;
+  background-color: ${colors.grey50};
+`;
