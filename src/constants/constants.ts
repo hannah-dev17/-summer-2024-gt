@@ -4,7 +4,7 @@ export const ID_LENGTH = {
 };
 
 export const PASSWORD_LENGTH = {
-  MIN: 6,
+  MIN: 8,
   MAX: 20,
 };
 

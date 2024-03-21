@@ -53,32 +53,37 @@ export function BasicInfo({ showSubPage }: BasicInfoProps) {
   const hasPasswordPatternError = errors.password?.type === 'pattern';
   const hasPasswordMinLengthError = errors.password?.type === 'minLength';
 
-  const isButtonDisabled = Object.keys(errors).length !== 0;
-
   const [phone, setPhone] = useState<string>(basicInfo.phone || '');
   const [realName, setRealName] = useState<string>(basicInfo.realName || '');
   const [loginId, setLoginId] = useState<string>(basicInfo.loginId || '');
   const [password, setPassword] = useState<string>(basicInfo.password || '');
 
+  const isButtonDisabled =
+    phone.length === 0 ||
+    realName.length === 0 ||
+    loginId.length === 0 ||
+    password.length === 0 ||
+    Object.keys(errors).length !== 0;
+
   const formValidation: IFormValidation = {
     phone: {
       required: true,
-      maxLength: 20,
+      maxLength: PHONE_LENGTH.MAX,
       pattern: /^\d{3}-\d{3,4}-\d{4}$/,
     },
     realName: {
       required: true,
-      maxLength: 20,
+      maxLength: REAL_NAME_LENGTH.MAX,
     },
     loginId: {
       required: true,
-      maxLength: 20,
+      maxLength: ID_LENGTH.MAX,
       pattern: /^[a-z0-9_.]+$/,
     },
     password: {
       required: true,
-      minLength: 7,
-      maxLength: 20,
+      minLength: PASSWORD_LENGTH.MIN,
+      maxLength: PASSWORD_LENGTH.MAX,
       pattern: /^[a-z0-9]+$/,
     },
   };
