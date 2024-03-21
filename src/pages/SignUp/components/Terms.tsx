@@ -15,7 +15,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { loginPath } from '../../../constants';
 import { SubPage } from '../types';
 import { LinkText } from './LinkText';
-import { useKakaoSignUp, useSignUp } from '../../../quries';
+import { useKakaoSignUp, useSignUp } from '../../../queries';
 
 type TermsProps = {
   showSubPage: (value: SubPage) => void;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { boardPath } from '../constants';
-import { JWT_KEY } from '../config/constant';
+import { JWT_KEY } from '../constants';
 
 type PublicRouteProps = {
   children: React.ReactElement;

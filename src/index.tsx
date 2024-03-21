@@ -2,7 +2,7 @@ import React, { StrictMode } from 'react';
 import App from './App';
 import { RecoilRoot } from 'recoil';
 import 'react-app-polyfill/stable';
-import { GlobalStyle } from './components/styles';
+import { GlobalStyle } from './styles';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 

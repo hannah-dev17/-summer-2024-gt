@@ -20,7 +20,6 @@
     "@tanstack/react-query": "^5.28.4",
     "axios": "^1.6.7",
     "dotenv-cli": "^5.1.0",
-    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
@@ -28,13 +27,11 @@
     "react-hook-form": "^7.51.0",
     "react-router-dom": "^6.2.2",
     "recoil": "^0.7.6",
-    "simplebar-react": "^2.4.1",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
-    "@types/jsonwebtoken": "^9.0.0",
     "@types/react-dom": "^18.2.22",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",

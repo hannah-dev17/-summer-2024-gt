@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { JWT_KEY } from '../config/constant';
+import { JWT_KEY } from '../constants';
 import { jwtDecode } from 'jwt-decode';
 import { AuthRepository } from '../repositories';
 
