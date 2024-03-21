@@ -4,3 +4,4 @@ export { Text } from './Text';
 export { Button } from './Button';
 export { KakaoLoginButton } from './KakaoLoginButton';
 export { AppDownloadBadges } from './AppDownloadBadges';
+export { Header } from './Header';
