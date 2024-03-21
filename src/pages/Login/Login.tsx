@@ -11,7 +11,7 @@ import { InputField, Spacing, Text, Button, KakaoLoginButton, AppDownloadBadges 
 import { PasswordInput } from './components';
 import { useSetRecoilState } from 'recoil';
 import { authState } from '../../recoil';
-import { JWT_KEY } from '../../config/constant';
+import { JWT_KEY } from '../../constants';
 import { ErrorResponse } from '../../types';
 import axios from 'axios';
 import { useSignIn } from '../../quries';

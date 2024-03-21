@@ -1,3 +1,5 @@
+export const JWT_KEY = 'jwt';
+
 export const ID_LENGTH = {
   MIN: 1,
   MAX: 20,

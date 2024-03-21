@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { loginPath } from '../constants';
-import { JWT_KEY } from '../config/constant';
+import { JWT_KEY } from '../constants';
 
 type PrivateRouteProps = {
   children: React.ReactElement;

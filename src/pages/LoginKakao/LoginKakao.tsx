@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { JWT_KEY } from '../../config/constant';
+import { JWT_KEY } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { useKakaoAccessToken, useKakaoSignIn } from '../../quries';
 import axios from 'axios';

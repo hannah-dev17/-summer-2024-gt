@@ -7,7 +7,7 @@ import { ReactComponent as SettingsIcon } from '../../assets/icons/settings.svg'
 import { ReactComponent as AlertCircleIcon } from '../../assets/icons/alert-circle.svg';
 import { Spacing } from '../Spacing';
 import { Text } from '../Text';
-import { JWT_KEY } from '../../config/constant';
+import { JWT_KEY } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { loginPath } from '../../constants';
 
