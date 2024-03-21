@@ -1,0 +1,1 @@
+export { KakaoRepository } from './kakao';
