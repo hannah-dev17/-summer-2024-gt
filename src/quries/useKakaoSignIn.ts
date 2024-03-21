@@ -2,11 +2,11 @@ import { useMutation } from '@tanstack/react-query';
 import { AuthRepository } from '../repositories';
 
 type MutationFnProps = {
-  code: string;
+  accessToken: string;
 };
 
 export function useKakaoSignIn() {
   return useMutation({
-    mutationFn: ({ code }: MutationFnProps) => AuthRepository.signInByKakao({ code }),
+    mutationFn: ({ accessToken }: MutationFnProps) => AuthRepository.signInKakaoByToken({ accessToken }),
   });
 }

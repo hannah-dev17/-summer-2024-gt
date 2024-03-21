@@ -48,12 +48,12 @@ export function Terms({ showSubPage }: TermsProps) {
   };
 
   const signUpByKakao = () => {
-    if (!location.state?.code) {
+    if (!location.state?.accessToken) {
       return;
     }
 
     kakaoSignUpQuery.mutate(
-      { ...signUpInfo, code: location.state.code },
+      { ...signUpInfo, accessToken: location.state.accessToken },
       {
         onSuccess: () => {
           navigate(loginPath);

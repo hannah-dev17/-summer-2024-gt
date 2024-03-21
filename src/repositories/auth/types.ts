@@ -17,11 +17,11 @@ export type VerifyJwtTokenBody = {
   jwt: string;
 };
 
-export type SignInByKakaoQueryParams = {
-  code: string;
+export type SignInKakaoByTokenBody = {
+  accessToken: string;
 };
 
-export type SignInByKakaoResponse = {
+export type SignInKakaoByCodeResponse = {
   id: number;
   jwt: string;
 };
@@ -39,7 +39,8 @@ export type SignUpResponse = {
   loginId: string;
 };
 
-export type SignUpByKakaoBody = {
+export type SignUpKakaoByCodeBody = {
+  accessToken: string;
   loginId: string;
   password: string;
   realName: string;
@@ -47,11 +48,7 @@ export type SignUpByKakaoBody = {
   birthDate: string;
 };
 
-export type SignUpByKakaoQueryParams = {
-  code: string;
-};
-
-export type SignUpByKakaoResponse = {
+export type SignUpKakaoByCodeResponse = {
   id: number;
   loginId: string;
 };

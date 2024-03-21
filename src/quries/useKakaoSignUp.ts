@@ -7,12 +7,12 @@ type MutationFnProps = {
   realName: string;
   phone: string;
   birthDate: string;
-  code: string;
+  accessToken: string;
 };
 
 export function useKakaoSignUp() {
   return useMutation({
-    mutationFn: ({ loginId, password, realName, phone, birthDate, code }: MutationFnProps) =>
-      AuthRepository.signUpByKakaoCode({ loginId, password, realName, phone, birthDate }, { code }),
+    mutationFn: ({ loginId, password, realName, phone, birthDate, accessToken }: MutationFnProps) =>
+      AuthRepository.signUpKakaoByToken({ loginId, password, realName, phone, birthDate, accessToken }),
   });
 }

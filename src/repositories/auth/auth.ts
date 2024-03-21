@@ -4,13 +4,12 @@ import { request } from '../../apis/interceptor';
 import { ResponseOK } from '../../types';
 import {
   SignInBody,
-  SignInByKakaoQueryParams,
-  SignInByKakaoResponse,
+  SignInKakaoByTokenBody,
+  SignInKakaoByCodeResponse,
   SignInResponse,
   SignUpBody,
-  SignUpByKakaoBody,
-  SignUpByKakaoQueryParams,
-  SignUpByKakaoResponse,
+  SignUpKakaoByCodeBody,
+  SignUpKakaoByCodeResponse,
   SignUpResponse,
   VerifyJwtTokenBody,
   VeryfiJwtTokenResponse,
@@ -25,18 +24,15 @@ export class AuthRepository {
     return axios.post(`${process.env.REACT_APP_API}${ENDPOINT.AUTH.VERIFY_JWT_TOEKN}`, body);
   }
 
-  static signInByKakao(queryParams: SignInByKakaoQueryParams): Promise<ResponseOK<SignInByKakaoResponse>> {
-    return request.get(ENDPOINT.AUTH.KAKAO_SIGN_IN_BY_CODE, { params: queryParams });
+  static signInKakaoByToken(body: SignInKakaoByTokenBody): Promise<ResponseOK<SignInKakaoByCodeResponse>> {
+    return request.post(ENDPOINT.AUTH.SIGN_IN_KAKAO_BY_TOKEN, body);
   }
 
   static signUp(body: SignUpBody): Promise<ResponseOK<SignUpResponse>> {
     return request.post(ENDPOINT.AUTH.SIGN_UP, body);
   }
 
-  static signUpByKakaoCode(
-    body: SignUpByKakaoBody,
-    queryParams: SignUpByKakaoQueryParams,
-  ): Promise<ResponseOK<SignUpByKakaoResponse>> {
-    return request.post(ENDPOINT.AUTH.KAKAO_SIGN_IN_BY_CODE, body, { params: queryParams });
+  static signUpKakaoByToken(body: SignUpKakaoByCodeBody): Promise<ResponseOK<SignUpKakaoByCodeResponse>> {
+    return request.post(ENDPOINT.AUTH.SIGN_UP_KAKAO_BY_TOKEN, body);
   }
 }

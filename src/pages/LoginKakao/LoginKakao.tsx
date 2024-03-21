@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
 import { JWT_KEY } from '../../config/constant';
 import { useNavigate } from 'react-router-dom';
+import { useKakaoAccessToken, useKakaoSignIn } from '../../quries';
 import axios from 'axios';
 import { ErrorResponse } from '../../types';
-import { useKakaoSignIn } from '../../quries';
+import { signUpPath } from '../../constants';
 
 export function LoginKakao() {
   const navigate = useNavigate();
+  const kakaoAccessTokenQuery = useKakaoAccessToken();
   const kakaoSignInQuery = useKakaoSignIn();
 
   const signIn = useCallback(() => {
@@ -16,27 +18,40 @@ export function LoginKakao() {
       return;
     }
 
-    kakaoSignInQuery.mutate(
+    kakaoAccessTokenQuery.mutate(
       { code },
       {
         onSuccess: response => {
-          const { jwt } = response.result;
+          const { access_token: accessToken } = response.data;
 
-          localStorage.setItem(JWT_KEY, jwt);
-          navigate('/');
+          kakaoSignInQuery.mutate(
+            { accessToken },
+            {
+              onSuccess: response => {
+                const { jwt } = response.result;
+
+                localStorage.setItem(JWT_KEY, jwt);
+                navigate('/');
+              },
+              onError: error => {
+                if (axios.isAxiosError<ErrorResponse>(error) && error.response) {
+                  const { statusCode } = error.response.data;
+
+                  if (statusCode === 400 || statusCode === 404) {
+                    navigate(signUpPath, { state: { signInType: 'kakao', accessToken } });
+                  }
+                }
+              },
+            },
+          );
         },
         onError: error => {
-          if (axios.isAxiosError<ErrorResponse>(error) && error.response) {
-            const { statusCode } = error.response.data;
-
-            if (statusCode === 400 || statusCode === 404) {
-              navigate('/sign-up', { state: { signInType: 'kakao', code } });
-            }
-          }
+          // eslint-disable-next-line no-console
+          console.log(error);
         },
       },
     );
-  }, [kakaoSignInQuery, navigate]);
+  }, [kakaoAccessTokenQuery, kakaoSignInQuery, navigate]);
 
   useEffect(() => {
     signIn();
