@@ -54,6 +54,7 @@ npm run build-stage # stage 환경용 build 파일 생성
 
 npm run build-prod # prod 환경용 build 파일 생성
 ```
+npm run start 시 http://localhost:3000 에서 확인 가능합니다.
 
 ## 폴더 구조 및 기능
 ```
